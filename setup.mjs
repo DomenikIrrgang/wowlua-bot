@@ -329,7 +329,7 @@ await step("Bot nickname and owner role", async () => {
   await api("PATCH", `/guilds/${guildId}/members/@me`, { nick: plan.guild.botNickname });
   await api("PUT", `/guilds/${guildId}/members/${me.id}/roles/${roleIds.bots}`);
   await api("PUT", `/guilds/${guildId}/members/${guild.owner_id}/roles/${roleIds.dev}`);
-  log("  owner has Developer");
+  log(`  owner has ${plan.roles.find((r) => r.key === "dev").name}`);
 });
 
 await step("Messages", async () => {
