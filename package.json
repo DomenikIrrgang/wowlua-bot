@@ -1,0 +1,18 @@
+{
+  "name": "wowlua-discord-setup",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sets up the wowlua Discord server from plan.mjs through the Discord API.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "plan": "node setup.mjs",
+    "apply": "node setup.mjs --apply",
+    "images": "node render-images.mjs"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "2.6.2"
+  }
+}

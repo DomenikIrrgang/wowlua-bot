@@ -1,0 +1,8 @@
+# docker compose run --rm discord-setup            dry run
+# docker compose run --rm discord-setup --apply    make the changes
+services:
+  discord-setup:
+    build: .
+    image: wowlua-discord-setup
+    env_file: .env
+    restart: "no"
