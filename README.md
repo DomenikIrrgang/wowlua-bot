@@ -7,20 +7,35 @@ API. Change the plan, run it again, done.
 It runs once and exits; it is not an always-online bot. It's the same setup as the
 [SuuUI server's](https://github.com/DomenikIrrgang/suuui-bot), with wowlua's plan and images.
 
+## The look
+
+The server follows the [wowlua design system](https://claude.ai/artifact/XSnoJQkRAB4T9fuSZvmYRw), as far as Discord
+lets it:
+
+- **Output is the ornament.** Categories are bracketed like the site's section labels (`[ community ]`), posts show
+  real commands in code blocks, and there are no emoji: the only reactions are the server's own `:wowlua:` and `:plus1:`,
+  drawn from the brand.
+- **One brand hue.** Only developer and moderator wear amber. Every other name keeps Discord's own ink, and the hoisted
+  groups name each role, so no role relies on colour alone. Posts are framed in `line-strong`; release posts are amber.
+- **Lowercase chrome.** Roles, forum tags, voice channels and onboarding options are lowercase like the CLI. Flavors
+  are Blizzard's game types (`standard`, `mists`, `vanilla`), with "Retail" and the rest in the option's description.
+- **The compiler's voice.** Short, present tense, "you"; never "we", no exclamation marks. AutoMod answers like a
+  diagnostic (`error[automod]: …`).
+
 ## What it sets up
 
 | | |
 |---|---|
 | **Server** | Name, icon, Community, verification and media filter, description |
-| **Roles** | Developer, Moderator, Contributor, Addon Author in wowlua's syntax colours; the game flavors (Retail, WoW Forever, MoP, Cata and Wrath Classic, TBC Anniversary, Classic Era); ping roles |
-| **Channels** | Six categories: Information, Community, Support, Development, Voice, Very secret area (staff only) |
+| **Roles** | developer and moderator (amber), contributor, addon author; the flavors (`standard`, `camelot`, `mists`, `cata`, `wrath`, `tbc`, `vanilla`); ping roles |
+| **Channels** | Six categories: `[ information ]`, `[ community ]`, `[ support ]`, `[ development ]`, `[ voice ]`, `[ very secret area ]` (staff only) |
 | **Forums** | #showcase, #snippets, #suggestions, #help and #bug-reports, with tags and posting guidelines |
 | **Posts** | #welcome, #rules, #faq, #known-issues; edited in place on every run |
 | **Rules** | The #rules post and Discord's rules screening, from one list |
 | **Onboarding** | Flavors, pings, and the development channels; the welcome screen |
 | **AutoMod** | Slurs and sexual content, spam, invite links and scams, alerts to #mod-log |
-| **Webhooks** | #releases, which wowlua's release workflow posts each release to with a ping for @Release pings; commits, pull requests and issues to #github-feed |
-| **Look** | The bot's avatar and banner, the `:wowlua:` emoji |
+| **Webhooks** | #releases, which wowlua's release workflow posts each release to with a ping for @release pings; commits, pull requests and issues to #github-feed |
+| **Images** | The server icon, the bot's avatar and banner, the `:wowlua:` and `:plus1:` emoji |
 
 ## First run
 
@@ -32,7 +47,7 @@ It runs once and exits; it is not an always-online bot. It's the same setup as t
 6. **Apply:** run `node setup.mjs --apply --prune`. `--prune` removes Discord's default channels.
 7. **Roles:** in **Server Settings → Roles**, drag the bot's role to the top, then run `node setup.mjs --apply` again to sort the roles. A bot can't move its own role.
 8. **Releases:** in the wowlua repository, add the #releases webhook's URL as the `DISCORD_RELEASES_WEBHOOK` secret and the
-   Release pings role's ID as the `DISCORD_RELEASE_ROLE_ID` variable (Settings → Secrets and variables → Actions).
+   release pings role's ID as the `DISCORD_RELEASE_ROLE_ID` variable (Settings → Secrets and variables → Actions).
 
 ## Running it
 
@@ -59,18 +74,19 @@ Or `docker compose run --rm discord-setup --apply`. `.env` never goes into the i
 
 ## Changing the server
 
-Edit [`plan.mjs`](plan.mjs) and run `node setup.mjs --apply`. Things are found by name. To rename a channel or category, give it
-its new `name` and its old one as `was`, and it keeps its messages. A role renamed in the plan becomes a new role, so
-rename it in Discord too.
+Edit [`plan.mjs`](plan.mjs) and run `node setup.mjs --apply`. Things are found by name. To rename a channel, category,
+role or webhook, give it its new `name` and its old one as `was`: a channel keeps its messages, a role its members and
+a webhook its URL. A change of case alone needs no `was`.
 
-- **`:wowlua:` in text** becomes the server's emoji; `<#channel>` becomes a channel link.
+- **`:wowlua:` in text** becomes the server's emoji; `<#channel>` becomes a channel link; `@moderator` a mention.
 - **Rules** live in `rules`, used by both the #rules post and rules screening (300 characters each at most).
-- **Contributor** and **Addon Author** are given by hand: Contributor for a merged pull request, Addon Author for an
-  addon built with wowlua that's out (a #showcase post is a good place to notice one).
+- **contributor** and **addon author** are given by hand: contributor for a merged pull request, addon author for an
+  AddOn built with wowlua that's out (a #showcase post is a good place to notice one).
 
 ## Images
 
-`assets/` holds wowlua's mark and banner from the [wowlua repository](https://github.com/DomenikIrrgang/wowlua/tree/main/.github/assets)
+`assets/` holds the tile and mark from the design system's logos, the banner from the
+[wowlua repository](https://github.com/DomenikIrrgang/wowlua/tree/main/.github/assets), IBM Plex Mono for the `+1`,
 and the PNGs made from them: the server icon, the bot's avatar and banner, and the emoji. After changing
 [`render-images.mjs`](render-images.mjs):
 
@@ -88,26 +104,27 @@ Discord doesn't let bots change these, so they live in Server Settings, not in t
 
 - **Safety Setup:** verification Highest (a verified phone number), 2FA required for moderator actions, raid and DM
   spam alerts. The plan keeps the verification level at Highest.
-- **Server Guide** (Server Settings → Onboarding → Server Guide), with the server owner as the welcome message's author:
+- **Server Guide** (Server Settings → Onboarding → Server Guide), with the server owner as the welcome message's author.
+  Leave every emoji empty, or pick the server's `:wowlua:`:
 
-  > Hi, and welcome! wowlua is typed Lua for WoW AddOns, and it's young, so what you build and tell us really shapes it.
-  > Install it, try it on an addon you already have, and if something breaks, tell us. Enjoy!
+  > wowlua is typed Lua for World of Warcraft AddOns. Install it, try it on an AddOn you already have, and report what
+  > breaks in #bug-reports.
 
-  | New member to-do | Channel | Description | Emoji | Done when |
-  |---|---|---|---|---|
-  | Read the FAQ | #faq | Installing, flavors, and the questions we hear most | 📖 | they open it |
-  | Stuck? Ask in #help | #help | One question per post, with `wowlua --version` | ❓ | they open it |
-  | Found a bug? Report it | #bug-reports | With the command you ran and its output | 🐞 | they open it |
-  | Show what you built | #showcase | An addon made with wowlua | ✨ | they open it |
-  | Say hi | #general | Tell us what you're building | 👋 | they post |
-
-  | Resource page | Channel | Description | Emoji |
+  | New member to-do | Channel | Description | Done when |
   |---|---|---|---|
-  | Get wowlua | #welcome | How to install it and start | 👋 |
-  | FAQ | #faq | Answers to the questions we hear most | 📖 |
-  | Known issues | #known-issues | Confirmed bugs and their workarounds | 🩹 |
-  | What's new | #releases | Every release as it ships | 📦 |
-  | Snippets | #snippets | Code others found worth sharing | 🧩 |
+  | Read the FAQ | #faq | Installing, flavors, and the questions asked most | they open it |
+  | Ask in #help | #help | One question per post, with `wowlua --version` | they open it |
+  | Report a bug | #bug-reports | With the command you ran and its output | they open it |
+  | Show what you built | #showcase | An AddOn made with wowlua | they open it |
+  | Say what you're building | #general | Your AddOn, and the flavors it runs on | they post |
+
+  | Resource page | Channel | Description |
+  |---|---|---|
+  | Get wowlua | #welcome | How to install it and start |
+  | FAQ | #faq | Answers to the questions asked most |
+  | Known issues | #known-issues | Confirmed bugs and their workarounds |
+  | Releases | #releases | Every release as it ships |
+  | Snippets | #snippets | Code worth reusing |
 
 ## Good to know
 
@@ -121,4 +138,5 @@ Discord doesn't let bots change these, so they live in Server Settings, not in t
 ## Licence
 
 MIT, see [`LICENSE`](LICENSE). wowlua's logo and banner are set in Martian Mono and IBM Plex Mono (SIL Open Font
-License 1.1) and converted to outlines.
+License 1.1) and converted to outlines. [IBM Plex Mono](assets/fonts) is under the SIL Open Font License, see
+[`assets/fonts/OFL.txt`](assets/fonts/OFL.txt).

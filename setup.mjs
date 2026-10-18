@@ -116,7 +116,7 @@ function overwrites(...presets) {
 
 const resolveMentions = (text) => text
   ?.replace(/<#([a-z0-9-]+)>/g, (m, name) => (channelIds[name] ? `<#${channelIds[name]}>` : `#${name}`))
-  .replace(/@Moderator\b/g, () => (roleIds.mod ? `<@&${roleIds.mod}>` : "@Moderator"))
+  .replace(/@moderator\b/gi, (m) => (roleIds.mod ? `<@&${roleIds.mod}>` : m))
   .replace(/:([a-z0-9_]+):/g, (m, name) => (emojiIds[name] ? `<:${name}:${emojiIds[name]}>` : m));
 
 // A forum's default reaction: a unicode emoji, or ":name:" for one of the server's own.
@@ -143,7 +143,9 @@ log(`Community: ${community ? "on" : "off (will be turned on)"}`);
 
 if (!apply) {
   log("\nRoles:");
-  for (const r of plan.roles) log(`  ${roles.some((x) => x.name === r.name) ? "keep  " : "create"} ${r.name}`);
+  for (const r of plan.roles) {
+    log(`  ${roles.some((x) => x.name === r.name) ? "keep  " : r.was && roles.some((x) => x.name === r.was) ? `rename ${r.was} →` : "create"} ${r.name}`);
+  }
   log("\nChannels:");
   for (const cat of plan.categories) {
     const hasCategory = (name) => channels.some((c) => c.type === 4 && sameName(c.name, name));
@@ -176,7 +178,8 @@ await step("Roles", async () => {
   await api("PATCH", `/guilds/${guildId}/roles/${guildId}`, { permissions: bits(plan.everyonePerms) });
   for (const r of plan.roles) {
     const body = { name: r.name, color: r.color ?? 0, hoist: !!r.hoist, mentionable: !!r.mentionable, permissions: bits(r.perms) };
-    const existing = roles.find((x) => x.name === r.name);
+    // A role renamed in the plan keeps its members: `was` names it before the rename.
+    const existing = roles.find((x) => x.name === r.name) ?? (r.was && roles.find((x) => x.name === r.was));
     const role = existing ? await api("PATCH", `/guilds/${guildId}/roles/${existing.id}`, body) : await api("POST", `/guilds/${guildId}/roles`, body);
     roleIds[r.key] = role.id;
     log(`  ${existing ? "updated" : "created"} ${r.name}`);
@@ -271,6 +274,7 @@ await step("Channel settings and order", async () => {
       const body = { permission_overwrites: overwrites(cat.overwrites, ch.overwrites) };
       if (ch.type === "announcement" && current.type === 0) body.type = 5;
       if (ch.type === "text" && current.type === 5) body.type = 0;
+      if (current.name !== ch.name) body.name = ch.name; // found by name in any case; this fixes the case
       if (ch.topic && ch.type !== "voice") body.topic = resolveMentions(ch.topic);
       if (ch.type === "voice") body.user_limit = ch.userLimit ?? 0; // 0: no limit
       if (ch.type === "forum") {
@@ -353,7 +357,7 @@ await step("AutoMod", async () => {
   const existing = await api("GET", `/guilds/${guildId}/auto-moderation/rules`);
   const triggers = { keyword: 1, spam: 3, keyword_preset: 4, mention_spam: 5 };
   for (const r of plan.automod.rules) {
-    const actions = [{ type: 1, metadata: { custom_message: `${plan.guild.name}'s AutoMod blocked this message.` } },
+    const actions = [{ type: 1, metadata: { custom_message: plan.automod.message ?? `${plan.guild.name}'s AutoMod blocked this message.` } },
       { type: 2, metadata: { channel_id: channelIds[plan.automod.alertChannel] } }];
     if (r.timeoutSeconds) actions.push({ type: 3, metadata: { duration_seconds: r.timeoutSeconds } });
     const trigger_metadata = {};
@@ -431,6 +435,9 @@ await step("Webhooks", async () => {
     const avatar = ch.webhook.avatar ? pngDataUri(ch.webhook.avatar) : iconDataUri();
     const hooks = await api("GET", `/channels/${id}/webhooks`);
     let hook = hooks.find((h) => h.name === ch.webhook.name);
+    // A webhook renamed in the plan keeps its URL, which CI holds as a secret: `was` names it before the rename.
+    const old = !hook && ch.webhook.was && hooks.find((h) => h.name === ch.webhook.was);
+    if (old) { hook = { ...old, ...(await api("PATCH", `/webhooks/${old.id}`, { name: ch.webhook.name })) }; log(`  renamed ${ch.webhook.was} → ${ch.webhook.name}`); }
     if (!hook) hook = await api("POST", `/channels/${id}/webhooks`, { name: ch.webhook.name, avatar });
     else if (args.has("--profile")) await api("PATCH", `/webhooks/${hook.id}`, { avatar });
     log(`  #${ch.name}: ${ch.webhook.name}${args.has("--profile") ? " (picture uploaded)" : ""}`);
