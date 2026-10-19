@@ -30,6 +30,9 @@ export const guild = {
   botNickname: "wowlua",
   botAvatar: "assets/avatar.png", // the mark tile (render-images.mjs)
   botBanner: "assets/banner.png", // the README's banner
+  // The application's description, on the bot's profile; the application's icon is botAvatar.
+  appDescription: "Sets up the wowlua Discord server from a plan, then exits. Typed Lua for World of Warcraft AddOns: https://wowlua.dev\n\n" +
+    "Source: https://github.com/DomenikIrrgang/wowlua-bot",
   verificationLevel: 4, // highest: a verified phone number, as on the SuuUI server
   explicitContentFilter: 2, // scan everyone's media
   defaultNotifications: 1, // mentions only

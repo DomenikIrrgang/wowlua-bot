@@ -325,6 +325,17 @@ await step("Bot profile picture and banner", async () => {
   log(`  set ${Object.keys(body).join(" and ")}`);
 });
 
+// The application's own icon and description, shown when someone opens the bot's profile.
+await step("Application icon and description", async () => {
+  const app = await api("GET", "/applications/@me");
+  const body = {};
+  if (plan.guild.appDescription && app.description !== plan.guild.appDescription) body.description = plan.guild.appDescription;
+  if (!app.icon || args.has("--profile")) body.icon = pngDataUri(plan.guild.botAvatar);
+  if (!Object.keys(body).length) return log("  already set (--profile replaces the icon)");
+  await api("PATCH", "/applications/@me", body);
+  log(`  set ${Object.keys(body).join(" and ")}`);
+});
+
 await step("Bot nickname and owner role", async () => {
   await api("PATCH", `/guilds/${guildId}/members/@me`, { nick: plan.guild.botNickname });
   await api("PUT", `/guilds/${guildId}/members/${me.id}/roles/${roleIds.bots}`);
