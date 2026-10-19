@@ -115,19 +115,24 @@ Discord doesn't let bots change these, so they live in Server Settings, not in t
 
 - **Safety Setup:** verification Highest (a verified phone number), 2FA required for moderator actions, raid and DM
   spam alerts. The plan keeps the verification level at Highest.
-- **Server Guide** (Server Settings → Onboarding → Server Guide), with the server owner as the welcome message's author.
-  Leave every emoji empty, or pick the server's `:wowlua:`:
+- **Server Guide** (Server Settings → Onboarding → Server Guide), switched on, as it is set up. The welcome message's
+  author is the wowlua bot, so it speaks as the tool:
 
-  > wowlua is typed Lua for World of Warcraft AddOns. Install it, try it on an AddOn you already have, and report what
-  > breaks in #bug-reports.
+  > Hey [@username]. Welcome to wowlua, a typed Lua for World of Warcraft AddOns.
 
-  | New member to-do | Channel | Description | Done when |
-  |---|---|---|---|
-  | Read the FAQ | #faq | Installing, flavors, and the questions asked most | they open it |
-  | Ask in #help | #help | One question per post, with `wowlua --version` | they open it |
-  | Report a bug | #bug-reports | With the command you ran and its output | they open it |
-  | Show what you built | #showcase | An AddOn made with wowlua | they open it |
-  | Say what you're building | #general | Your AddOn, and the flavors it runs on | they post |
+  New member to-dos take a channel, a title and an emoji (Discord's settings have no description field). Each one
+  wears 🟧, like the categories:
+
+  | To-do | Channel |
+  |---|---|
+  | Read the FAQ | #faq |
+  | Ask in #help | #help |
+  | Report a bug | #bug-reports |
+  | Show what you built | #showcase |
+  | Talk about what you're building | #general |
+
+  Resource pages, each with the 256px logo tile (`wowlua-mark-tile.svg`, rendered as in `render-images.mjs`) as its
+  icon. Forum channels can't be resource pages, so #snippets isn't one:
 
   | Resource page | Channel | Description |
   |---|---|---|
@@ -135,7 +140,6 @@ Discord doesn't let bots change these, so they live in Server Settings, not in t
   | FAQ | #faq | Answers to the questions asked most |
   | Known issues | #known-issues | Confirmed bugs and their workarounds |
   | Releases | #releases | Every release as it ships |
-  | Snippets | #snippets | Code worth reusing |
 
 ## Good to know
 
