@@ -1,6 +1,6 @@
 // The wowlua Discord server, as data. setup.mjs makes the server match this file; run it again after a change.
 // It follows the wowlua design system (https://claude.ai/artifact/XSnoJQkRAB4T9fuSZvmYRw):
-// - output is the ornament: [ brackets ], $ prompts and code blocks, never emoji;
+// - output is the ornament: [ brackets ], $ prompts and code blocks; the one emoji is 🟧, the amber block caret, on categories;
 // - one brand hue: amber marks the people and things to act on, everything else is neutral;
 // - UI chrome (roles, tags, voice channels, options) is lowercase like the CLI; headings use sentence case;
 // - the compiler's voice: short, present tense, "you", never "I" or "we", no exclamation marks;
@@ -86,10 +86,11 @@ const areaTags = ["language", "type checker", "builds & toc", "standard library"
 const flavorTags = ["standard", "camelot", "mists", "cata", "wrath", "tbc", "vanilla"];
 
 // type: text | announcement | forum | voice | stage. Categories keep their overwrites; channels add their own on top.
-// Discord shows category names in capitals; the brackets are the site's section labels ("[ community ]").
+// Discord shows category names in capitals; the brackets are the site's section labels ("[ community ]"). Names can't be
+// coloured, so 🟧 stands in for the brand's amber block caret: one hue, the same mark on every category.
 export const categories = [
   {
-    name: "[ information ]", was: "📢 ◆ INFORMATION ◆ 📢", overwrites: readOnly,
+    name: "🟧 [ information ]", was: "[ information ]", overwrites: readOnly,
     channels: [
       { name: "welcome", type: "text", topic: "What wowlua is, how to start, and how this server works." },
       { name: "rules", type: "text", topic: "Read these before you post." },
@@ -101,7 +102,7 @@ export const categories = [
     ],
   },
   {
-    name: "[ community ]", was: "💬 ◆ COMMUNITY ◆ 💬",
+    name: "🟧 [ community ]", was: "[ community ]",
     channels: [
       { name: "general", type: "text", topic: "Talk about wowlua and writing AddOns. Questions go to <#help>, bugs to <#bug-reports>." },
       {
@@ -124,7 +125,7 @@ export const categories = [
     ],
   },
   {
-    name: "[ support ]", was: "🆘 ◆ SUPPORT ◆ 🆘",
+    name: "🟧 [ support ]", was: "[ support ]",
     channels: [
       {
         name: "help", type: "forum", requireTag: true,
@@ -144,7 +145,7 @@ export const categories = [
     ],
   },
   {
-    name: "[ development ]", was: "💻 ◆ DEVELOPMENT ◆ 💻",
+    name: "🟧 [ development ]", was: "[ development ]",
     channels: [
       { name: "contributing", type: "text", topic: `Working on wowlua itself. Behaviour changes start in the spec: ${links.spec}` },
       { name: "language-design", type: "text", topic: "Syntax, semantics, the type system and the standard library's API: how wowlua should work, and why." },
@@ -153,7 +154,7 @@ export const categories = [
     ],
   },
   {
-    name: "[ voice ]", was: "🔊 ◆ VOICE ◆ 🔊",
+    name: "🟧 [ voice ]", was: "[ voice ]",
     channels: [
       { name: "lounge", type: "voice" },
       { name: "pair programming", type: "voice" }, // screen-share and work through a problem together
@@ -163,7 +164,7 @@ export const categories = [
     ],
   },
   {
-    name: "[ very secret area ]", was: "🤫 ◆ VERY SECRET AREA ◆ 🤫", overwrites: staffOnly,
+    name: "🟧 [ very secret area ]", was: "[ very secret area ]", overwrites: staffOnly,
     channels: [
       { name: "mod-chat", type: "text", topic: "Moderators and developers." },
       { name: "mod-log", type: "text", topic: "AutoMod alerts, joins and Discord safety alerts." },

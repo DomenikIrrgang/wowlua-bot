@@ -12,9 +12,9 @@ It runs once and exits; it is not an always-online bot. It's the same setup as t
 The server follows the [wowlua design system](https://claude.ai/artifact/XSnoJQkRAB4T9fuSZvmYRw), as far as Discord
 lets it:
 
-- **Output is the ornament.** Categories are bracketed like the site's section labels (`[ community ]`), posts show
-  real commands in code blocks, and there are no emoji: the only reactions are the server's own `:wowlua:` and `:plus1:`,
-  drawn from the brand.
+- **Output is the ornament.** Categories are bracketed like the site's section labels (`🟧 [ community ]`), posts show
+  real commands in code blocks, and the only emoji is 🟧: Discord can't colour category names, so it stands in for
+  the brand's amber block caret. The only reactions are the server's own `:wowlua:` and `:plus1:`, drawn from the brand.
 - **One brand hue.** Only developer and moderator wear amber. Every other name keeps Discord's own ink, and the hoisted
   groups name each role, so no role relies on colour alone. Posts are framed in `line-strong`; release posts are amber.
 - **Lowercase chrome.** Roles, forum tags, voice channels and onboarding options are lowercase like the CLI. Flavors
@@ -28,7 +28,7 @@ lets it:
 |---|---|
 | **Server** | Name, icon, Community, verification and media filter, description |
 | **Roles** | developer and moderator (amber), contributor, addon author; the flavors (`standard`, `camelot`, `mists`, `cata`, `wrath`, `tbc`, `vanilla`); ping roles |
-| **Channels** | Six categories: `[ information ]`, `[ community ]`, `[ support ]`, `[ development ]`, `[ voice ]`, `[ very secret area ]` (staff only) |
+| **Channels** | Six categories, each marked 🟧: `[ information ]`, `[ community ]`, `[ support ]`, `[ development ]`, `[ voice ]`, `[ very secret area ]` (staff only) |
 | **Forums** | #showcase, #snippets, #suggestions, #help and #bug-reports, with tags and posting guidelines |
 | **Posts** | #welcome, #rules, #faq, #known-issues; edited in place on every run |
 | **Rules** | The #rules post and Discord's rules screening, from one list |
