@@ -48,6 +48,17 @@ lets it:
 7. **Roles:** in **Server Settings → Roles**, drag the bot's role to the top, then run `node setup.mjs --apply` again to sort the roles. A bot can't move its own role.
 8. **Releases:** in the wowlua repository, add the #releases webhook's URL as the `DISCORD_RELEASES_WEBHOOK` secret and the
    release pings role's ID as the `DISCORD_RELEASE_ROLE_ID` variable (Settings → Secrets and variables → Actions).
+   The bot made the webhook, so Discord won't copy its URL; the bot can read it, and `gh` stores it without showing it:
+
+   ```sh
+   node --input-type=module -e '
+   import { readFileSync } from "node:fs";
+   const env = Object.fromEntries(readFileSync(".env", "utf8").split(/\r?\n/).map((l) => l.match(/^([A-Z_]+)=(.*)$/)).filter(Boolean).map((m) => [m[1], m[2]]));
+   const api = (p) => fetch(`https://discord.com/api/v10${p}`, { headers: { Authorization: `Bot ${env.DISCORD_TOKEN}` } }).then((r) => r.json());
+   const channel = (await api(`/guilds/${env.GUILD_ID}/channels`)).find((c) => c.name === "releases");
+   const hook = (await api(`/channels/${channel.id}/webhooks`)).find((h) => h.name === "wowlua releases");
+   process.stdout.write(`https://discord.com/api/webhooks/${hook.id}/${hook.token}`);' | gh secret set DISCORD_RELEASES_WEBHOOK -R DomenikIrrgang/wowlua
+   ```
 
 ## Running it
 
