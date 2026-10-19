@@ -15,8 +15,10 @@ lets it:
 - **Output is the ornament.** Categories are bracketed like the site's section labels (`🟧 [ community ]`), posts show
   real commands in code blocks, and the only emoji is 🟧: Discord can't colour category names, so it stands in for
   the brand's amber block caret. The only reactions are the server's own `:wowlua:` and `:plus1:`, drawn from the brand.
-- **One brand hue.** Only developer and moderator wear amber. Every other name keeps Discord's own ink, and the hoisted
-  groups name each role, so no role relies on colour alone. Posts are framed in `line-strong`; release posts are amber.
+- **Highlighted code.** The staff and earned roles wear the syntax colours, so the member list reads like highlighted
+  code: developer `syn-keyword` (amber), moderator `syn-decorator`, contributor `syn-type`, addon author `syn-string`,
+  bots `syn-comment`. Every other name keeps Discord's own ink, and the hoisted groups name each role, so no role relies
+  on colour alone. Posts are framed in `line-strong`; release posts are amber.
 - **Lowercase chrome.** Roles, forum tags, voice channels and onboarding options are lowercase like the CLI. Flavors
   are Blizzard's game types (`standard`, `mists`, `vanilla`), with "Retail" and the rest in the option's description.
 - **The compiler's voice.** Short, present tense, "you"; never "we", no exclamation marks. AutoMod answers like a
@@ -27,7 +29,7 @@ lets it:
 | | |
 |---|---|
 | **Server** | Name, icon, Community, verification and media filter, description |
-| **Roles** | developer and moderator (amber), contributor, addon author; the flavors (`standard`, `camelot`, `mists`, `cata`, `wrath`, `tbc`, `vanilla`); ping roles |
+| **Roles** | developer, moderator, contributor, addon author and bots in the syntax colours; the flavors (`standard`, `camelot`, `mists`, `cata`, `wrath`, `tbc`, `vanilla`); ping roles |
 | **Channels** | Six categories, each marked 🟧: `[ information ]`, `[ community ]`, `[ support ]`, `[ development ]`, `[ voice ]`, `[ very secret area ]` (staff only) |
 | **Forums** | #showcase, #snippets, #suggestions, #help and #bug-reports, with tags and posting guidelines |
 | **Posts** | #welcome, #rules, #faq, #known-issues; edited in place on every run |

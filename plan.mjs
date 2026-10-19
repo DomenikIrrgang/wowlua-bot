@@ -1,7 +1,7 @@
 // The wowlua Discord server, as data. setup.mjs makes the server match this file; run it again after a change.
 // It follows the wowlua design system (https://claude.ai/artifact/XSnoJQkRAB4T9fuSZvmYRw):
 // - output is the ornament: [ brackets ], $ prompts and code blocks; the one emoji is 🟧, the amber block caret, on categories;
-// - one brand hue: amber marks the people and things to act on, everything else is neutral;
+// - one brand hue: amber marks the people and things to act on; earned roles wear the syntax colours (syn-*);
 // - UI chrome (roles, tags, voice channels, options) is lowercase like the CLI; headings use sentence case;
 // - the compiler's voice: short, present tense, "you", never "I" or "we", no exclamation marks;
 // - flavors are Blizzard's game types (standard, mists, vanilla), with "Retail" only next to standard.
@@ -42,20 +42,19 @@ export const guild = {
   embedColor: 0x6e6554, // line-strong: posts are framed like code blocks; amber is kept for releases
 };
 
-const amber = 0xffb547;
-
-// Top to bottom, as they appear in the member list. Only staff wear amber, the one brand hue; every other name keeps
-// Discord's own ink, which suits both themes. The hoisted groups name each role, so no role relies on colour alone.
+// Top to bottom, as they appear in the member list. The staff and earned roles wear wowlua's syntax colours, so the
+// member list reads like highlighted code; everyone else keeps Discord's own ink. The colours are the dark theme's,
+// as Discord takes one per role. The hoisted groups name each role, so no role relies on colour alone.
 export const roles = [
-  { key: "dev", name: "developer", was: "Developer", color: amber, hoist: true, perms: ["ADMINISTRATOR"] },
+  { key: "dev", name: "developer", was: "Developer", color: 0xffb547, hoist: true, perms: ["ADMINISTRATOR"] }, // syn-keyword, amber
   {
-    key: "mod", name: "moderator", was: "Moderator", color: amber, hoist: true, mentionable: true,
+    key: "mod", name: "moderator", was: "Moderator", color: 0xe59bd8, hoist: true, mentionable: true, // syn-decorator
     perms: ["KICK_MEMBERS", "BAN_MEMBERS", "MODERATE_MEMBERS", "MANAGE_MESSAGES", "MANAGE_THREADS", "MANAGE_NICKNAMES",
       "VIEW_AUDIT_LOG", "MUTE_MEMBERS", "DEAFEN_MEMBERS", "MOVE_MEMBERS", "MANAGE_EVENTS", "CREATE_EVENTS", "MENTION_EVERYONE"],
   },
-  { key: "contributor", name: "contributor", was: "Contributor", hoist: true }, // a merged pull request
-  { key: "author", name: "addon author", was: "Addon Author", hoist: true }, // shipped an AddOn built with wowlua
-  { key: "bots", name: "bots", was: "Bots", hoist: true },
+  { key: "contributor", name: "contributor", was: "Contributor", color: 0x74c7ec, hoist: true }, // syn-type; a merged pull request
+  { key: "author", name: "addon author", was: "Addon Author", color: 0x9bd982, hoist: true }, // syn-string; shipped an AddOn built with wowlua
+  { key: "bots", name: "bots", was: "Bots", color: 0x8a8172, hoist: true }, // syn-comment
   // The game types members write for (wowlua-flavors' table), so helpers know which client a question is about.
   { key: "retail", name: "standard", was: "Retail" },
   { key: "forever", name: "camelot", was: "WoW Forever" },
